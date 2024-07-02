@@ -8,12 +8,17 @@ import base64
 import boto3
 from botocore.config import Config
 from io import BytesIO  
+import configparser
 
 # AWSの設定
 # 注意: 環境変数やAWS IAMロールを使用することを強く推奨します
-aws_access_key_id = 'AKIA47CRUVESGZSEMWFM'
-aws_secret_access_key = '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'
-region_name = 'ap-northeast-1'
+config_ini = configparser.ConfigParser()
+config_ini.read('config.ini', encoding='utf-8')
+aws_access_key_id = config_ini['rekognition']['aws_access_key_id']
+aws_secret_access_key = config_ini['rekognition']['aws_secret_access_key']
+region_name = config_ini['rekognition']['region_name']
+
+image_url = "/Users/kimurahotaka/Documents/Venus/takasu.jpg"
 
 # 歪み関数
 def apply_distortion(im_cv, scale_x, scale_y, amount):
@@ -133,12 +138,19 @@ if page == "カメラ&顔の輪郭加工":
 
         scale_x = st.slider("スケールX", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
         scale_y = st.slider("スケールY", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
-        amount = st.slider("量", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
+        amount = st.slider("変化させる量", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
 
         distorted_image = apply_distortion(im_cv, scale_x, scale_y, amount)
         distorted_image = Image.fromarray(distorted_image)
 
         st.image([image, distorted_image], caption=['元の画像', '歪んだ画像'], width=300)
+
+        if st.button("元の画像を保存"):
+            buffered = BytesIO()
+            image.save(buffered, format="PNG")
+            img_str = base64.b64encode(buffered.getvalue()).decode()
+            href = f'<a href="data:file/png;base64,{img_str}" download="original_image.png">元の画像をダウンロード</a>'
+            st.markdown(href, unsafe_allow_html=True)
 
         if st.button("画像を保存"):
             buffered = BytesIO()
@@ -164,17 +176,12 @@ elif page == "目の加工":
                 processed_image = process_image(image, magnification, blur_num)
                 processed_image_rgb = cv2.cvtColor(processed_image, cv2.COLOR_BGR2RGB)
                 st.image(processed_image_rgb, caption="Processed Image", use_column_width=True)
-
-                # Save processed image
-                buffered = BytesIO()
-                Image.fromarray(cv2.cvtColor(processed_image, cv2.COLOR_BGR2RGB)).save(buffered, format="PNG")
-                img_str = base64.b64encode(buffered.getvalue()).decode()
-                href = f'<a href="data:file/png;base64,{img_str}" download="processed_image.png">画像をダウンロード</a>'
-                st.markdown(href, unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
 
 elif page == "美容外科ランキング":
+    import streamlit as st
+
     st.title("美容外科ランキング")
 
     # メイン目次
