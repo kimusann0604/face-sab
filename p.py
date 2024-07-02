@@ -12,16 +12,30 @@ import configparser
 
 # AWSの設定
 # 注意: 環境変数やAWS IAMロールを使用することを強く推奨します
-config_ini = configparser.ConfigParser()
-config_ini.read('/Users/kimurahotaka/Documents/Venus/config.ini')
+import cv2
+import boto3
+from botocore.config import Config
 import configparser
+from boto3 import Session
 
+# configparserを使って設定ファイルを読み込む
 config_ini = configparser.ConfigParser()
-config_ini.read('/path/to/config.ini')  # 正しいパスを指定してください
+config_ini.read('./config.ini')
 
-aws_access_key_id = config_ini['rekognition']['aws_access_key_id']
-aws_secret_access_key = config_ini['rekognition']['aws_secret_access_key']
-region_name = 'ap-northeast-1'
+# 設定ファイルから読み込むセクション名
+config_key = 'rekognition'
+
+# AWSリージョン
+my_region = 'ap-northeast-1'
+
+# Boto3のSessionを作成してAWSに接続
+session = Session(
+    aws_access_key_id=config_ini[config_key]['aws_access_key_id'],
+    aws_secret_access_key=config_ini[config_key]['aws_secret_access_key'],
+    region_name=my_region)
+
+# Rekognitionサービスのクライアントを作成
+client = session.client(service_name='rekognition')
 
 image_url = "/Users/kimurahotaka/Documents/Venus/takasu.jpg"
 
