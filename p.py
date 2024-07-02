@@ -12,18 +12,18 @@ from botocore.config import Config
 import boto3
 
 # configparserを使って設定ファイルを読み込む
-config_ini = configparser.ConfigParser()
-config_ini.read('./config.ini')
+# config_ini = configparser.ConfigParser()
+# config_ini.read('./config.ini')
 
 # 設定ファイルから読み込むセクション名
-config_key = 'rekognition'
+# config_key = 'rekognition'
 
 # AWSリージョン
-my_region = 'ap-northeast-1'
+# my_region = 'ap-northeast-1'
 
 # AWSアクセスキーとシークレットアクセスキー
-aws_access_key_id = config_ini[config_key]['aws_access_key_id']
-aws_secret_access_key = config_ini[config_key]['aws_secret_access_key']
+# aws_access_key_id = config_ini[config_key]['aws_access_key_id']
+# aws_secret_access_key = config_ini[config_key]['aws_secret_access_key']
 aws_acces_key_id = st.secrets["aws_access_key_id"]
 aws_secret_access_key = st.secrets["aws_secret_access_key"]
 
