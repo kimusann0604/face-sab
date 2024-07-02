@@ -24,14 +24,14 @@ import boto3
 # AWSアクセスキーとシークレットアクセスキー
 # aws_access_key_id = config_ini[config_key]['aws_access_key_id']
 # aws_secret_access_key = config_ini[config_key]['aws_secret_access_key']
-aws_acces_key_id = st.secrets["aws_access_key_id"]
+aws_access_key_id = st.secrets["aws_access_key_id"]
 aws_secret_access_key = st.secrets["aws_secret_access_key"]
 
 # Boto3のSessionを作成してAWSに接続
 session = Session(
     aws_access_key_id=aws_access_key_id,
     aws_secret_access_key=aws_secret_access_key,
-    region_name=my_region
+    region_name = 'ap-northeast-1'
 )
 
 # Rekognitionサービスのクライアントを作成
