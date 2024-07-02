@@ -13,10 +13,15 @@ import configparser
 # AWSの設定
 # 注意: 環境変数やAWS IAMロールを使用することを強く推奨します
 config_ini = configparser.ConfigParser()
-config_ini.read('config.ini', encoding='utf-8')
+config_ini.read('/Users/kimurahotaka/Documents/Venus/config.ini')
+import configparser
+
+config_ini = configparser.ConfigParser()
+config_ini.read('/path/to/config.ini')  # 正しいパスを指定してください
+
 aws_access_key_id = config_ini['rekognition']['aws_access_key_id']
 aws_secret_access_key = config_ini['rekognition']['aws_secret_access_key']
-region_name = config_ini['rekognition']['region_name']
+region_name = 'ap-northeast-1'
 
 image_url = "/Users/kimurahotaka/Documents/Venus/takasu.jpg"
 
