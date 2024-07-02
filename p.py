@@ -35,6 +35,7 @@ session = Session(
 )
 
 # Rekognitionサービスのクライアントを作成
+
 client = session.client(service_name='rekognition')
 
 image_url = "/Users/kimurahotaka/Documents/Venus/takasu.jpg"
@@ -63,14 +64,12 @@ def apply_distortion(im_cv, scale_x, scale_y, amount):
 
 # Rekognition関連の関数
 def rekog_eye(im):
-    global aws_access_key_id, aws_secret_access_key, my_region  # グローバル変数を参照
-    client = boto3.client('rekognition', region_name=my_region, 
-                          aws_access_key_id=aws_access_key_id,
-                          aws_secret_access_key=aws_secret_access_key,
-                          config=Config(retries={'max_attempts': 10, 'mode': 'standard'}))
+    global client  # 既に作成したclientを使用
     
     _, buf = cv2.imencode('.jpg', im)
     faces = client.detect_faces(Image={'Bytes':buf.tobytes()}, Attributes=['ALL'])
+    
+    # 以下は変更なし
     
     landmarks = faces['FaceDetails'][0]['Landmarks']
     eye_types = ['leftEyeLeft', 'leftEyeRight', 'leftEyeUp', 'leftEyeDown', 
