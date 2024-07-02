@@ -5,22 +5,15 @@ import math
 from PIL import Image
 import pandas as pd
 import base64
-import boto3
-from botocore.config import Config
 from io import BytesIO  
 import configparser
-
-# AWSの設定
-# 注意: 環境変数やAWS IAMロールを使用することを強く推奨します
-import cv2
-import boto3
-from botocore.config import Config
-import configparser
 from boto3 import Session
+from botocore.config import Config
+import boto3
 
 # configparserを使って設定ファイルを読み込む
 config_ini = configparser.ConfigParser()
-config_ini.read('./config.ini')
+config_ini.read('/Users/kimurahotaka/Documents/Venus/config.ini')
 
 # 設定ファイルから読み込むセクション名
 config_key = 'rekognition'
@@ -28,11 +21,16 @@ config_key = 'rekognition'
 # AWSリージョン
 my_region = 'ap-northeast-1'
 
+# AWSアクセスキーとシークレットアクセスキー
+aws_access_key_id = config_ini[config_key]['aws_access_key_id']
+aws_secret_access_key = config_ini[config_key]['aws_secret_access_key']
+
 # Boto3のSessionを作成してAWSに接続
 session = Session(
-    aws_access_key_id=config_ini[config_key]['aws_access_key_id'],
-    aws_secret_access_key=config_ini[config_key]['aws_secret_access_key'],
-    region_name=my_region)
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=my_region
+)
 
 # Rekognitionサービスのクライアントを作成
 client = session.client(service_name='rekognition')
@@ -63,7 +61,8 @@ def apply_distortion(im_cv, scale_x, scale_y, amount):
 
 # Rekognition関連の関数
 def rekog_eye(im):
-    client = boto3.client('rekognition', region_name, 
+    global aws_access_key_id, aws_secret_access_key, my_region  # グローバル変数を参照
+    client = boto3.client('rekognition', region_name=my_region, 
                           aws_access_key_id=aws_access_key_id,
                           aws_secret_access_key=aws_secret_access_key,
                           config=Config(retries={'max_attempts': 10, 'mode': 'standard'}))
@@ -199,8 +198,6 @@ elif page == "目の加工":
                 st.error(f"An error occurred: {str(e)}")
 
 elif page == "美容外科ランキング":
-    import streamlit as st
-
     st.title("美容外科ランキング")
 
     # メイン目次
