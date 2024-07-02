@@ -8,12 +8,15 @@ import base64
 import boto3
 from botocore.config import Config
 from io import BytesIO  
+import configparser
 
 # AWSの設定
 # 注意: 環境変数やAWS IAMロールを使用することを強く推奨します
-aws_access_key_id = 'AKIA47CRUVESGZSEMWFM'
-aws_secret_access_key = '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'
-region_name = 'ap-northeast-1'
+config_ini = configparser.ConfigParser()
+config_ini.read('config.ini', encoding='utf-8')
+aws_access_key_id = config_ini['rekognition']['aws_access_key_id']
+aws_secret_access_key = config_ini['rekognition']['aws_secret_access_key']
+region_name = config_ini['rekognition']['region_name']
 
 image_url = "/Users/kimurahotaka/Documents/Venus/takasu.jpg"
 
