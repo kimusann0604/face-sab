@@ -33,7 +33,7 @@ session = Session(
     aws_secret_access_key=aws_secret_access_key,
     region_name = 'ap-northeast-1'
 )
-
+#鍵の指定
 # Rekognitionサービスのクライアントを作成
 
 client = session.client(service_name='rekognition')
@@ -64,7 +64,7 @@ def apply_distortion(im_cv, scale_x, scale_y, amount):
 
 # Rekognition関連の関数
 def rekog_eye(im):
-    global client  # 既に作成したclientを使用
+    global client  # 既に作成したclientを使用義t
     
     _, buf = cv2.imencode('.jpg', im)
     faces = client.detect_faces(Image={'Bytes':buf.tobytes()}, Attributes=['ALL'])

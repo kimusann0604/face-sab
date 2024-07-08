@@ -1,0 +1,8 @@
+opencv-python-headless ==4.9.0.80
+numpy==1.26.4
+pandas==2.1.4
+boto3==1.34.135
+botocore==1.34.135
+streamlit==1.36.0
+pillow==10.3.0
+

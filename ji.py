@@ -135,7 +135,7 @@ if page == "カメラ&顔の輪郭加工":
 
         scale_x = st.slider("スケールX", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
         scale_y = st.slider("スケールY", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
-        amount = st.slider("量", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
+        amount = st.slider("変化せる量", min_value=0.1, max_value=2.0, value=1.0, step=0.1)
 
         distorted_image = apply_distortion(im_cv, scale_x, scale_y, amount)
         distorted_image = Image.fromarray(distorted_image)
